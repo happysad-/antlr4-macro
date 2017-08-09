@@ -50,7 +50,7 @@ public final class Main {
             }
             
             if (line.hasOption("v")) {
-            	//TODO: Implement a verbose output
+            	CommandLineFlags.verbose = true;
             }
             
             if (line.hasOption("o")) {
@@ -105,7 +105,7 @@ public final class Main {
         options.addOption("i", "input", true, "processes the given file(s)");
         options.addOption("r", "recursive", false, "processes the given directory recursively");
         options.addOption("o", "out", true, "defines the output file name / directory");
-        options.addOption("t", true, "defines the thread limit (default is 2)");
+        options.addOption("t", "threads", true, "defines the thread limit (default is 2)");
         options.addOption("v", "verbose", false, "displays a verbose output");
         return options;
     }
@@ -131,5 +131,7 @@ public final class Main {
         public static String outputDirectory;
         
         public static int threadLimit = 2;
+        
+        public static boolean verbose;
     }
 }

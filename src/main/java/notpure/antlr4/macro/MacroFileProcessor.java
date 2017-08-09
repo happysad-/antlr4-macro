@@ -48,7 +48,7 @@ public final class MacroFileProcessor {
      * {@link notpure.antlr4.macro.Main.CommandLineFlags#recursive}.
      */
     public static void processDirectory(String directory) {
-    	System.out.println("Processing directory: " + directory);
+    	
         // Aggregate target files
         ArrayList<String> fileNames = new ArrayList<>();
         FileHelper.getFileNames(fileNames, Paths.get(directory), ".mg4", Main.CommandLineFlags.recursive);
