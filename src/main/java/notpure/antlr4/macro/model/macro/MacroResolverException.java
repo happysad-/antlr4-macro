@@ -5,7 +5,12 @@ package notpure.antlr4.macro.model.macro;
  */
 public class MacroResolverException extends Exception {
 
-    public MacroResolverException(String message) {
+    /**
+	 * Generated serial version unique identifier.
+	 */
+	private static final long serialVersionUID = -5550039630209320401L;
+
+	public MacroResolverException(String message) {
         super(message);
     }
 
@@ -14,7 +19,12 @@ public class MacroResolverException extends Exception {
      */
     public static final class CyclicMacroRuleReferenceException extends MacroResolverException {
 
-        public CyclicMacroRuleReferenceException(String identifier) {
+    	/**
+    	 * Generated serial version unique identifier.
+    	 */
+		private static final long serialVersionUID = 5110447227250588269L;
+
+		public CyclicMacroRuleReferenceException(String identifier) {
             super("Cyclic reference in rule: " + identifier);
         }
     }
@@ -24,7 +34,12 @@ public class MacroResolverException extends Exception {
      */
     public static final class MissingMacroRuleReferenceException extends MacroResolverException {
 
-        public MissingMacroRuleReferenceException(String parentRule, String identifier) {
+    	/**
+    	 * Generated serial version unique identifier.
+    	 */
+		private static final long serialVersionUID = -5215983592763831513L;
+
+		public MissingMacroRuleReferenceException(String parentRule, String identifier) {
             super("Reference `" + identifier + "` not found in rule: " + parentRule);
         }
     }

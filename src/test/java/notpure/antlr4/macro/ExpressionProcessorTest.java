@@ -1,23 +1,23 @@
 package notpure.antlr4.macro;
 
-import notpure.antlr4.macro.model.lang.Expression;
-import notpure.antlr4.macro.model.lang.ExpressionType;
-import notpure.antlr4.macro.model.lang.ExpressionValue;
-import notpure.antlr4.macro.model.lang.ExpressionValueType;
-import notpure.antlr4.macro.model.macro.MissingMacroRuleException;
-import notpure.antlr4.macro.processor.ExpressionProcessor;
-import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static notpure.antlr4.macro.model.lang.ExpressionValueType.*;
+import static notpure.antlr4.macro.model.lang.ExpressionValueType.ALTERNATOR;
+import static notpure.antlr4.macro.model.lang.ExpressionValueType.REGEX_GROUP;
 import static notpure.antlr4.macro.model.lang.ExpressionValueType.RULE_REFERENCE;
 import static notpure.antlr4.macro.model.lang.ExpressionValueType.STRING;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.junit.Test;
+
+import notpure.antlr4.macro.model.lang.Expression;
+import notpure.antlr4.macro.model.lang.ExpressionType;
+import notpure.antlr4.macro.model.lang.ExpressionValue;
+import notpure.antlr4.macro.model.macro.MissingMacroRuleException;
+import notpure.antlr4.macro.processor.ExpressionProcessor;
 
 /**
  * A set of tests for {@link ExpressionProcessor}.

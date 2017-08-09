@@ -22,7 +22,7 @@ public final class ExpressionValueParser {
      * Logger instance.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(ExpressionValueParser.class);
-    private static final List<ExpressionParser> parsers = new ArrayList<>();
+    private static final List<ExpressionParser<ExpressionValue>> parsers = new ArrayList<ExpressionParser<ExpressionValue>>();
 
     static {
         initParsers();
@@ -41,7 +41,7 @@ public final class ExpressionValueParser {
                 return values;
 
             // Parse regularly
-            ExpressionParser parser = getParser(it);
+            ExpressionParser<ExpressionValue> parser = getParser(it);
 
             if (parser != null) {
                 ExpressionValue expr;
@@ -82,8 +82,8 @@ public final class ExpressionValueParser {
         parsers.add(new RegexGroupParser());
     }
 
-    private static ExpressionParser getParser(TokenParserIterator it) {
-        Optional<ExpressionParser> parser = parsers.stream().filter(p -> p.validate(it)).findFirst();
+    private static ExpressionParser<ExpressionValue> getParser(TokenParserIterator it) {
+        Optional<ExpressionParser<ExpressionValue>> parser = parsers.stream().filter(p -> p.validate(it)).findFirst();
         return parser.isPresent() ? parser.get() : null;
     }
 }

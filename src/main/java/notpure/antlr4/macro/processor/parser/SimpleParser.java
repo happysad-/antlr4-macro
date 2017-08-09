@@ -1,22 +1,25 @@
 package notpure.antlr4.macro.processor.parser;
 
-import notpure.antlr4.macro.model.parser.ExpressionParser;
-import notpure.antlr4.macro.model.parser.ParserException;
-import notpure.antlr4.macro.model.parser.ParserExceptionListener;
-import notpure.antlr4.macro.model.lang.Expression;
-import notpure.antlr4.macro.model.token.Token;
-import notpure.antlr4.macro.processor.parser.expr.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import notpure.antlr4.macro.model.lang.Expression;
+import notpure.antlr4.macro.model.parser.ExpressionParser;
+import notpure.antlr4.macro.model.parser.ParserException;
+import notpure.antlr4.macro.model.parser.ParserExceptionListener;
+import notpure.antlr4.macro.model.token.Token;
+import notpure.antlr4.macro.processor.parser.expr.GrammarNameParser;
+import notpure.antlr4.macro.processor.parser.expr.GrammarRuleParser;
+import notpure.antlr4.macro.processor.parser.expr.MultiLineCommentParser;
+import notpure.antlr4.macro.processor.parser.expr.SingleLineCommentParser;
 
 /**
  * Parses tokens into statements.
  */
 public final class SimpleParser {
 
-    private final List<ExpressionParser> parsers = new ArrayList<>();
+    private final List<ExpressionParser<Expression>> parsers = new ArrayList<ExpressionParser<Expression>>();
     private final ParserExceptionListener parserExceptionListener;
     private boolean errorOccurred;
 
@@ -43,7 +46,7 @@ public final class SimpleParser {
         TokenParserIterator it = new TokenParserIterator(tokens);
 
         while (it.hasNext()) {
-            ExpressionParser parser = getParser(it);
+            ExpressionParser<Expression> parser = getParser(it);
 
             if (parser != null) {
                 Expression expr;
@@ -72,8 +75,8 @@ public final class SimpleParser {
         parsers.add(new GrammarRuleParser.MacroRuleParser());
     }
 
-    private ExpressionParser getParser(TokenParserIterator it) {
-        Optional<ExpressionParser> parser = parsers.stream().filter(p -> p.validate(it)).findFirst();
+    private ExpressionParser<Expression> getParser(TokenParserIterator it) {
+        Optional<ExpressionParser<Expression>> parser = parsers.stream().filter(p -> p.validate(it)).findFirst();
         return parser.isPresent() ? parser.get() : null;
     }
 

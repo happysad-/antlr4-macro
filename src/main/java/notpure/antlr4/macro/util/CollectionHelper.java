@@ -1,7 +1,5 @@
 package notpure.antlr4.macro.util;
 
-import notpure.antlr4.macro.model.lang.ExpressionValue;
-
 import java.util.List;
 
 /**

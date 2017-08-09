@@ -1,0 +1,1 @@
+grammar Hello;r: 'Hello World';ID: [a-z]+;WS: [ \t\r\n]+ -> skip;

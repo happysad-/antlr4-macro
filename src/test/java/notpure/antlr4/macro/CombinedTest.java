@@ -84,11 +84,13 @@ public final class CombinedTest {
         // Tokenize file input
         List<Token> actualOutput;
 
-        try (InputStream inputStream = new FileInputStream("src\\test\\resources\\notpure\\antlr4\\macro\\lexer-parser-input-1.mg4")) {
+        try (InputStream inputStream = new FileInputStream("src/test/resources/notpure/antlr4/macro/lexer-parser-input-1.mg4")) {
             actualOutput = Lexer.tokenize(inputStream);
         }
 
         // Compare outputs
+        System.out.println(eo.size() + " " + actualOutput.size());        
+        
         assertEquals(eo.size(), actualOutput.size());
 
         // Iterate over generated tokens
@@ -220,7 +222,7 @@ public final class CombinedTest {
         // Tokenize file input
         List<Token> actualOutput;
 
-        try (InputStream inputStream = new FileInputStream("src\\test\\resources\\notpure\\antlr4\\macro\\input-1.mg4")) {
+        try (InputStream inputStream = new FileInputStream("src/test/resources/notpure/antlr4/macro/input-1.mg4")) {
             actualOutput = Lexer.tokenize(inputStream);
         }
 

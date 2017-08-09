@@ -1,5 +1,25 @@
 package notpure.antlr4.macro;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import notpure.antlr4.macro.model.lang.Antlr4Serializable;
 import notpure.antlr4.macro.model.lang.Expression;
 import notpure.antlr4.macro.model.lang.ExpressionType;
@@ -10,14 +30,6 @@ import notpure.antlr4.macro.processor.ExpressionProcessor;
 import notpure.antlr4.macro.processor.Lexer;
 import notpure.antlr4.macro.processor.parser.SimpleParser;
 import notpure.antlr4.macro.util.FileHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.*;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * The master processor for macro files.
@@ -36,12 +48,38 @@ public final class MacroFileProcessor {
      * {@link notpure.antlr4.macro.Main.CommandLineFlags#recursive}.
      */
     public static void processDirectory(String directory) {
+    	System.out.println("Processing directory: " + directory);
         // Aggregate target files
         ArrayList<String> fileNames = new ArrayList<>();
         FileHelper.getFileNames(fileNames, Paths.get(directory), ".mg4", Main.CommandLineFlags.recursive);
 
         // Process all files
-        fileNames.forEach(MacroFileProcessor::processFile);
+        
+        List<Future<String>> futures = new ArrayList<Future<String>>();
+        ExecutorService exec = Executors.newFixedThreadPool(Main.CommandLineFlags.threadLimit);
+        
+        for (String fileName : fileNames) {
+        	futures.add(exec.submit(new Callable<String>() {
+        		@Override
+        		public String call() {
+        			MacroFileProcessor.processFile(fileName);
+        			return fileName;
+        		}
+        	}));
+        }
+        
+        for (Future<String> future : futures) {
+			try {
+				future.get();
+			} catch (InterruptedException | ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        
+        exec.shutdown();
+        
+//        fileNames.forEach(MacroFileProcessor::processFile);
     }
 
     /**
@@ -49,13 +87,21 @@ public final class MacroFileProcessor {
      */
     public static void processFile(String inFileName) {
         // Attempt to resolve directory of input if necessary
+    	
         if (!new File(inFileName).exists()) {
             File baseDir = new File(System.getProperty("user.dir"));
             inFileName = new File(baseDir, inFileName).getPath();
         }
 
         // Process input file
-        String outFileName = FileHelper.parseFileName(inFileName) + ".g4";
+        String outFileName;
+        
+        if (Main.CommandLineFlags.outputDirectory != null) {
+        	outFileName = Main.CommandLineFlags.outputDirectory + new File(FileHelper.parseFileName(inFileName)).getName() + (Main.CommandLineFlags.minify ? "-minified" : "") + ".g4";
+        } else {
+        	outFileName = FileHelper.parseFileName(inFileName) + (Main.CommandLineFlags.minify ? "-minified" : "") + ".g4";
+        }
+        
         processFile(inFileName, outFileName);
     }
 
@@ -80,6 +126,7 @@ public final class MacroFileProcessor {
             mfp.writeOutput();
         } catch (Exception e) {
             System.out.println("Error occurred: " + e.getMessage());
+            e.printStackTrace();
             LOGGER.error("Failed to process file '{}' because '{}'", inFileName, e.getMessage());
         }
     }
@@ -189,7 +236,7 @@ public final class MacroFileProcessor {
      */
     public static void writeOutput(String inFileName, String outFileName, String antlr4Code) throws IOException {
         File file = new File(outFileName);
-
+        
         if (!file.exists()) {
             file.createNewFile();
         }

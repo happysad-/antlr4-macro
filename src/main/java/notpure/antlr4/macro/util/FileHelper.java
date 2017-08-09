@@ -28,15 +28,17 @@ public final class FileHelper {
             // Iterate over paths
             stream.forEach(p -> {
                 if (p.toFile().isDirectory() && recursive) { // Directory
+                	
                     getFileNames(fileNames, p, ext, true);
                 } else { // File
                     String fileName = p.toAbsolutePath().toString();
-
+                    
                     if (fileName.endsWith(ext))
                         fileNames.add(fileName);
                 }
             });
         } catch (IOException e) {
+        	e.printStackTrace();
             return new ArrayList<>();
         }
         return fileNames;
