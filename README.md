@@ -35,15 +35,17 @@ This is a list of all command line options to be implemented:
 
 | Option | Argument | Definition |
 | ------ | -------- | ---------- |
-| `-h` `-help` | n/a | Displays all available commands and their descriptions |
-| `-url` | n/a | Prints the current url of the source code |
-| `-version` | n/a | Prints the current version of antlr4-macro |
-| `-m` `-minify` | n/a | Returns a minified version of grammar |
-| `-i` `-input` | `.` for current working directory, `/path/` for specific directory, `/path/to/file` for specific file | Specifies a current working directory, specific directory or a specific file to be processed |
-| `-r` `-recursive` | n/a | Processes the given directory recursively |
+| `-h` `-help` |  | Displays all available commands and their descriptions |
+| `-url` |  | Prints the current url of the source code |
+| `-version` |  | Prints the current version of antlr4-macro |
+| `-m` `-minify` |  | Returns a minified version of grammar |
+| `-i` `-input` | `.` for current working directory, 
+`/path/` for specific directory, 
+`/path/to/file` for specific file | Specifies a current working directory, specific directory or a specific file to be processed |
+| `-r` `-recursive` |  | Processes the given directory recursively |
 | `-o` `-out` | `/path/to/dir/` | Specify the directory to store the processed grammar files |
 | `-t` `-threads` | `<int>` | Specify the number of threads to use to parse directory (default 2 threads) |
-| `-v` `-verbose` | n/a | Print a verbose output to console |
+| `-v` `-verbose` |  | Print a verbose output to console |
 
 ## Example
 Input:
